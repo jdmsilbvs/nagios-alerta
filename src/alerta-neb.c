@@ -486,6 +486,15 @@ check_handler (int event_type, void *data)
         else if (hard_states_only && host_chk_data->state_type == SOFT_STATE)
           log_debug ("Host in Soft state -- suppress.");
         else
+          			
+          // Condition pour envoyer seulement si cov_service est "Infra", "Routeurs" ou "Nas"
+          if (strcmp(cov_service, "Infra") != 0 &&
+              strcmp(cov_service, "Routeurs") != 0 &&
+              strcmp(cov_service, "Nas") != 0) {
+            log_debug("Service n'est ni 'Infra', ni 'Routeur', ni 'Toto', suppression de l'envoi à Alerta.");
+            break; // Ignorer l'envoi si cov_service ne correspond pas
+          }
+
           send_to_alerta (alert_url, json_dumps (json, 0));
 
 #ifdef NAGIOS4
@@ -620,6 +629,13 @@ check_handler (int event_type, void *data)
           else if (hard_states_only && svc_chk_data->state_type == SOFT_STATE)
             log_debug ("Service in Soft state -- suppress.");
           else
+                      // Condition pour envoyer seulement si cov_service est "Infra", "Routeurs" ou "Nas"
+          if (strcmp(cov_service, "Infra") != 0 &&
+              strcmp(cov_service, "Routeurs") != 0 &&
+              strcmp(cov_service, "Nas") != 0) {
+            log_debug("Service n'est ni 'Infra', ni 'Routeur', ni 'Toto', suppression de l'envoi à Alerta.");
+            break; // Ignorer l'envoi si cov_service ne correspond pas
+          }
             send_to_alerta (alert_url, json_dumps (json, 0));
 
 #ifdef NAGIOS4
